@@ -1,0 +1,60 @@
+.navbar {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-top:1px solid rgb(224, 224, 224);
+    border-left:1px solid rgb(224, 224, 224);
+    border-right:1px solid rgb(224, 224, 224);
+    border-bottom:3px solid rgb(170, 170, 170);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+
+    @media screen and (max-width: 768px) {
+        width: 90%;
+  }
+  .container {
+    text-align: center;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    padding-left: 0px;
+    padding-right: 0px;
+
+    form .politicas {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 12px;
+    }
+
+        h3 {
+            font-size: 25px;
+            @media screen and (max-width: 768px) {
+                font-size: 18px;
+          }
+        }
+
+        form {
+            width: 100%;
+            background-color: #fff;
+            padding: 35px;
+
+            input {
+                width: 50%;
+                margin-left: auto;
+                margin-right: auto;
+
+                @media screen and (max-width: 768px) {
+                    width: 100%;
+              }
+            }
+            
+        }
+
+        small, a {
+            text-decoration: none;
+            color: black;
+        }
+}
+}

@@ -1,0 +1,12 @@
+.contenedor {
+    margin: 25px;
+    .fila-btn, .col {
+        display: flex;
+        justify-content: left;
+        .btnArgegarVacante {
+            margin: 10px;
+        }
+
+    }
+    
+}

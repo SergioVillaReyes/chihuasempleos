@@ -1,0 +1,68 @@
+// Responsive mixins 
+// Bootstrap breakpoints
+
+@mixin cel {
+  @media only screen and (max-width: 375px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+    @media only screen and (max-width: 768px) {
+      @content;
+    }
+  }
+  
+  @mixin desktop {
+    @media only screen and (max-width: 992px) {
+      @content;
+    }
+  }
+  
+  @mixin large {
+    @media only screen and (max-width: 1200px) {
+      @content;
+    }
+  }
+.carousel{
+
+    .carousel-caption{
+        zoom: 1;
+        background-color: transparent;
+        color: #fff;
+        padding: 2px 25px 0px 30px;
+        left: 0;
+        text-align: left;
+        margin: 0 auto;
+        display: inline-block;
+        bottom: 24%;
+        width: 80%;
+        right: 0 !important;
+        border-radius: 15px 15px 0 0;
+        h3{
+            color: #37393c;
+            letter-spacing: 0px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 68px;
+            font-weight: 700;
+
+            @include tablet {
+                font-size: 36px;
+              }
+
+              @include cel {
+                font-size: 20px;
+              }
+        }
+        p{
+            line-height: 22px;
+            color: #37393c;
+            text-transform: capitalize;
+            margin: 12px 0 18px;
+            font-size: 22px;
+            font-weight: 400;
+        }
+    }
+
+}

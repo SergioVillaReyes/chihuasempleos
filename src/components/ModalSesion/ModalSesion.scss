@@ -1,0 +1,13 @@
+.modal-dialog{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+        .close{
+            border: none;
+            background-color: white;
+        }
+        .modal-footer small a{
+                text-decoration: none;
+                color: black;
+        }
+}

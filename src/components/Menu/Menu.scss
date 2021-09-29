@@ -1,0 +1,49 @@
+// Responsive mixins 
+// Bootstrap breakpoints
+@mixin cel {
+  @media only screen and (max-width: 375px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+    @media only screen and (max-width: 768px) {
+      @content;
+    }
+  }
+  
+  @mixin desktop {
+    @media only screen and (max-width: 992px) {
+      @content;
+    }
+  }
+  
+  @mixin large {
+    @media only screen and (max-width: 1200px) {
+      @content;
+    }
+  }
+.logotipo-chihuas{
+    width: 100%;
+}
+.menu{
+    display: flex;
+    justify-content: space-between;
+
+    @include tablet {
+        justify-content: center;
+      }
+
+
+    .nav-link{
+        color: black; 
+        
+    }  
+    .tabs{
+        text-transform: uppercase;
+        color: black !important;
+        margin: 10px;
+        font-weight: 700;
+    }
+
+}

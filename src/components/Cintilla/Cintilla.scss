@@ -1,0 +1,39 @@
+// Responsive mixins 
+// Bootstrap breakpoints
+
+@mixin cel {
+    @media only screen and (max-width: 375px) {
+      @content;
+    }
+  }
+  
+  @mixin tablet {
+      @media only screen and (max-width: 768px) {
+        @content;
+      }
+    }
+    
+    @mixin desktop {
+      @media only screen and (max-width: 992px) {
+        @content;
+      }
+    }
+    
+    @mixin large {
+      @media only screen and (max-width: 1200px) {
+        @content;
+      }
+    }
+.cintilla{
+    background-color: black;
+        .nav{
+            justify-content: space-between;
+
+            @include tablet {
+                justify-content: center;
+              }
+                .nav-link{
+                    color: white;   
+                }  
+        }
+}
