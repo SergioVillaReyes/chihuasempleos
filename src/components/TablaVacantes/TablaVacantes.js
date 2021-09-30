@@ -31,7 +31,7 @@ export default function TablaVacantes(props){
 
     
   }
-  console.log('ruta',ruta);
+  // console.log('ruta',ruta);
 
   if(loading || !vacantes){
     return (

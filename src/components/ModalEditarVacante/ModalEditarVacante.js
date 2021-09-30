@@ -1,4 +1,4 @@
-import React, { useState , useRef} from "react";
+import React, { useState , useRef, useEffect} from "react";
 import { Modal, Button, Form, Col, Row, Spinner } from 'react-bootstrap';
 import JoditEditor from "jodit-react";
 import Select from 'react-select';
@@ -10,17 +10,20 @@ import useFetch from '../../hooks/useFetch';
 const sessionEmp = sessionStorage.getItem("sessionEmpresas");
 const sessionEmpresas = JSON.parse(sessionEmp);
 
-export default function ModalAgregarVacante(props){
+export default  function ModalAgregarVacante(props){
 
     const { show, onHide, ruta } = props;
 
-    const data = useFetch(urlApi+"vacantes.peticion.php?vacantePorNombre="+ruta); 
 
-    const vacante = data.result;
+    // const data = useFetch(urlApi+"vacantes.peticion.php?vacantePorNombre="+ruta); 
 
-    const loading = data.loading;
-    
+    // const vacante = "";
+
+    // const loading = "";
+
+
     const [formValue, setFormValue] = useState({
+        id: "",
         nombre: "",
         compania:"",
         ruta: "",
@@ -32,6 +35,36 @@ export default function ModalAgregarVacante(props){
         descripcion:"",
         sector:""
     });
+
+    async function agregarVacante ()  {
+
+        const data = await fetch(urlApi+"vacantes.peticion.php?vacantePorNombre="+ruta, {});  
+    
+        const peticion = await data.json();
+    
+        setFormValue({
+            ...formValue,
+            "id": peticion.id,
+            "nombre": peticion.nombre,
+            "ruta":peticion.ruta,
+            "compania": sessionEmpresas.nombre,
+            "categoria": peticion.categoria,
+            "noempleados": peticion.noempleados,
+            "tipojornada": peticion.tipojornada,
+            "salario": peticion.salario,
+            "periodo": peticion.periodo,
+            "descripcion": peticion.descripcion,
+            "sector": peticion.sector
+        })
+
+    
+        }
+
+        useEffect(() => {
+            agregarVacante ();
+        }, [ruta])
+    
+        console.log('formValue',formValue); 
 
 
     const onFormchange = event => {
@@ -51,14 +84,13 @@ export default function ModalAgregarVacante(props){
 
         const ruta = rutaFiltroOcho.split('').map( letra => acentos[letra] || letra).join('').toString();	
 
-        // console.log('ruta',ruta);
-
         setFormValue({
             ...formValue,
             [event.target.name]: event.target.value,
             "ruta": ruta.toLowerCase(),
             "compania": sessionEmpresas.nombre
         })
+
       }
 
 
@@ -111,43 +143,39 @@ export default function ModalAgregarVacante(props){
     
             e.preventDefault();
 
-            setFormValue({
-                ...formValue,
-                [e.target.name]: e.target.value
-            })
 
-            console.log('formValue',formValue);
-            
-        //     const addVacante = JSON.stringify(formValue);
+            const addVacante = JSON.stringify(formValue);
 
-        //     const respuesta = await fetch(urlApi+"vacantes.peticion.php?modificarVacante", {
-        //         method: "POST",
-        //         body: addVacante,
-        //     });  
+            const respuesta = await fetch(urlApi+"vacantes.peticion.php?modificarVacante", {
+                method: "POST",
+                body: addVacante,
+            });  
         
-        //     const peticion = await respuesta.json();
+            const peticion = await respuesta.json();
 
-        //     if(peticion == "ok"){ 
+            console.log('addVacante',addVacante);
 
-        //         swal("La vacante se agrego correctamente", {
-        //           buttons: {
-        //             cancel: "Seguir navegando",
-        //           },
-        //           icon: "success",
-        //         })
-        //         .then((value) => {
-        //           switch (value) {
+            if(peticion == "ok"){ 
+
+                swal("La vacante se edito correctamente", {
+                  buttons: {
+                    cancel: "Seguir navegando",
+                  },
+                  icon: "success",
+                })
+                .then((value) => {
+                  switch (value) {
                  
-        //             case "catch":
-        //               window.location = url+"perfil-empresa";
-        //               break;
+                    case "catch":
+                      window.location = url+"perfil-empresa";
+                      break;
                  
-        //             default:
-        //               window.location = url+"perfil-empresa";
-        //           }
-        //         });
+                    default:
+                      window.location = url+"perfil-empresa";
+                  }
+                });
         
-        // }
+        }
 
 
 
@@ -204,31 +232,24 @@ export default function ModalAgregarVacante(props){
     <Modal.Body>
 
 
-                {loading || !vacante ? (
-                    <div className="loading">
-                        <Spinner animation="border" role="status" />
-                        <h5>Cargando...</h5>
-                    </div>
-                ) : (
-
+            {
                     <Form
                     onChange={onFormchange}
                     onSubmit={modificarVacante}
                 >
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formNombre">
                 <Row>
     
                 <Col>
-                <Form.Control type="text" name="nombre" placeholder={vacante.nombre} />
+                <Form.Control type="text" name="nombre" placeholder={formValue.nombre}  />
                 </Col>
     
     
                 <Col>
                 <Select
                 classNamePrefix="basic=single"
-                classNamePrefix="seleccionar"
-                defaultValue={vacante.categoria}
-                placeholder={vacante.categoria}
+                defaultValue={formValue.categoria}
+                placeholder={formValue.categoria}
                 isDisabled={false}
                 isLoading={false}
                 isClearable={false}
@@ -253,7 +274,7 @@ export default function ModalAgregarVacante(props){
                 <Col>
                 <Select
                 name="noempleados"
-                placeholder={vacante.noempleados}
+                placeholder={formValue.noempleados}
                 options={numV}
                 onChange={selecNumEmp}
                 />
@@ -263,7 +284,7 @@ export default function ModalAgregarVacante(props){
                 <Col>
                 <Select
                 name="tipojornada"
-                placeholder={vacante.tipojornada}
+                placeholder={formValue.tipojornada}
                 options={jornada}
                 onChange={selecJornada}
                 />
@@ -279,12 +300,12 @@ export default function ModalAgregarVacante(props){
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Row>
                     <Col>
-                        <Form.Control type="text" name="salario" placeholder={vacante.salario} />
+                        <Form.Control type="text" name="salario" placeholder={formValue.salario} />
                     </Col>
                     <Col>
                         <Select
                         name="periodo"
-                        placeholder={vacante.periodo}
+                        placeholder={formValue.periodo}
                         options={periodo}
                         onChange={selectPeriodo}
                         />
@@ -299,7 +320,7 @@ export default function ModalAgregarVacante(props){
             <JoditEditor 
             name="descripcion"
             className="editor"
-            value={vacante.descripcion}
+            value={formValue.descripcion}
             ref={editor}
             config={config}
             onBlur={newContent => setFormValue({...formValue,"descripcion":newContent})}
@@ -312,7 +333,7 @@ export default function ModalAgregarVacante(props){
                 <Row>
     
                 <Col>
-                <Form.Control type="text" name="sector" placeholder={vacante.sector} />
+                <Form.Control type="text" name="sector" placeholder={formValue.sector} />
                 </Col>
     
                 </Row>
@@ -326,7 +347,7 @@ export default function ModalAgregarVacante(props){
     
                 </Form>
 
-                )}
+                } 
 
 
     </Modal.Body>
